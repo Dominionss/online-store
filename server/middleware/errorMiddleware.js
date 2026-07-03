@@ -1,0 +1,18 @@
+export const asyncHandler = (handler) => (req, res, next) => {
+  Promise.resolve(handler(req, res, next)).catch(next);
+};
+
+export const notFound = (req, res, next) => {
+  const error = new Error(`Route not found: ${req.originalUrl}`);
+  res.status(404);
+  next(error);
+};
+
+export const errorHandler = (error, req, res, _next) => {
+  const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
+
+  res.status(statusCode).json({
+    message: error.message || 'Something went wrong',
+    stack: process.env.NODE_ENV === 'production' ? undefined : error.stack,
+  });
+};
