@@ -1,0 +1,27 @@
+services:
+  mongodb:
+    image: mongo:7
+    container_name: globalbazaar-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: globalbazaar
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: globalbazaar-mongo-express
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+
+volumes:
+  mongodb-data:

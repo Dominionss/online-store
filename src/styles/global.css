@@ -636,6 +636,23 @@ s {
   gap: 14px;
 }
 
+.category-create-box {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 10px;
+}
+
+.category-create-box .field-hint {
+  grid-column: 1 / -1;
+}
+
+.field-hint {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .span-2 {
   grid-column: span 2;
 }
@@ -1199,6 +1216,7 @@ s {
   .payment-options,
   .detail-columns,
   .form-grid,
+  .category-create-box,
   .site-footer {
     grid-template-columns: 1fr;
   }

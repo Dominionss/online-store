@@ -16,8 +16,7 @@ function Footer() {
       <div>
         <h4>Account</h4>
         <Link to="/profile">Profile</Link>
-        <Link to="/orders">My orders</Link>
-        <Link to="/wishlist">Wishlist</Link>
+        <Link to="/login">Sign in</Link>
       </div>
       <div>
         <h4>Support</h4>

@@ -8,6 +8,10 @@
     "client": "vite",
     "server": "node server/server.js",
     "seed": "node server/seed/seedProducts.js",
+    "admin:create": "node server/seed/createAdmin.js",
+    "categories:seed": "node server/seed/seedCategories.js",
+    "mongo:up": "docker compose up -d mongodb mongo-express",
+    "mongo:down": "docker compose down",
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"

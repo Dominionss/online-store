@@ -1,4 +1,4 @@
-import { Heart, LayoutDashboard, Menu, Package, ShoppingCart, UserRound } from 'lucide-react';
+import { Heart, LayoutDashboard, Menu, Package, ReceiptText, ShoppingCart, UserRound } from 'lucide-react';
 import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth.js';
 import { useCart } from '../hooks/useCart.js';
@@ -29,6 +29,10 @@ function Header() {
           <NavLink to="/wishlist" title="Wishlist">
             <Heart size={21} />
             <span>Wishlist</span>
+          </NavLink>
+          <NavLink to="/orders" title="My orders">
+            <ReceiptText size={21} />
+            <span>Orders</span>
           </NavLink>
           <NavLink to="/cart" className="cart-link" title="Cart">
             <ShoppingCart size={21} />

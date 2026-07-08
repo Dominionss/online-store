@@ -1,4 +1,4 @@
-import { Save } from 'lucide-react';
+import { PlusCircle, Save } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import Button from '../../components/Button.jsx';
 import { categoryApi } from '../../api/productApi.js';
@@ -19,6 +19,9 @@ function AdminProductForm({ initialProduct, onSubmit, submitLabel }) {
   const [form, setForm] = useState(emptyForm);
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState('');
+  const [categoryName, setCategoryName] = useState('');
+  const [categoryMessage, setCategoryMessage] = useState('');
+  const [creatingCategory, setCreatingCategory] = useState(false);
 
   useEffect(() => {
     categoryApi.getCategories().then(setCategories).catch(() => setCategories([]));
@@ -42,6 +45,33 @@ function AdminProductForm({ initialProduct, onSubmit, submitLabel }) {
   }, [initialProduct]);
 
   const update = (field, value) => setForm((current) => ({ ...current, [field]: value }));
+
+  const createCategory = async () => {
+    const name = categoryName.trim();
+    if (!name) {
+      setCategoryMessage('Enter a category name first.');
+      return;
+    }
+
+    setCreatingCategory(true);
+    setCategoryMessage('');
+    try {
+      const createdCategory = await categoryApi.createCategory({
+        name,
+        description: `Products in ${name}`,
+      });
+      setCategories((current) =>
+        [...current, createdCategory].sort((first, second) => first.name.localeCompare(second.name)),
+      );
+      update('category', createdCategory._id);
+      setCategoryName('');
+      setCategoryMessage(`Category "${createdCategory.name}" created and selected.`);
+    } catch (err) {
+      setCategoryMessage(err.message);
+    } finally {
+      setCreatingCategory(false);
+    }
+  };
 
   const submit = async (event) => {
     event.preventDefault();
@@ -101,7 +131,22 @@ function AdminProductForm({ initialProduct, onSubmit, submitLabel }) {
               </option>
             ))}
           </select>
+          {!categories.length ? <span className="field-hint">No categories yet. Create one below.</span> : null}
         </label>
+        <div className="category-create-box">
+          <label>
+            New category
+            <input
+              value={categoryName}
+              onChange={(event) => setCategoryName(event.target.value)}
+              placeholder="Example: Electronics"
+            />
+          </label>
+          <Button type="button" variant="secondary" icon={PlusCircle} onClick={createCategory} disabled={creatingCategory}>
+            {creatingCategory ? 'Creating' : 'Create'}
+          </Button>
+          {categoryMessage ? <span className="field-hint">{categoryMessage}</span> : null}
+        </div>
         <label>
           Brand
           <input value={form.brand} onChange={(event) => update('brand', event.target.value)} required />
